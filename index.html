@@ -95,7 +95,7 @@
     <section id="contact">
       <h1 class="h-primary">Contact Us</h1>
       <div id="contact-box">
-        <form action="">
+        <form id="myForm">
           <div class="form-group">
             <label for="name">Name</label>
             <input
@@ -109,7 +109,7 @@
             <label for="name">Email</label>
             <input
               type="email"
-              name="name"
+              name="email"
               id="email"
               placeholder="Enter your Email"
             />
@@ -118,7 +118,7 @@
             <label for="name">Phone Number:</label>
             <input
               type="phone"
-              name="name"
+              name="phone"
               id="phone"
               placeholder="Enter your phone"
             />
@@ -134,7 +134,7 @@
             ></textarea>
           </div>
           <input type="submit" class="btn1" value="Submit" />
-          <input type="reset" class="btn1" value="Reset" />
+          <!-- <input type="reset" class="btn1" value="Reset" /> -->
         </form>
       </div>
     </section>
@@ -143,5 +143,27 @@
         Copyright &copy; www.MyonlineFood.com All rights resereved!
       </div>
     </footer>
+
+    <script>  
+      document.getElementById('myForm').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const formObject = Object.fromEntries(formData.entries());
+        // console.log(formObject);
+        const response = await fetch('http://localhost:5000/send-mail',{
+          method:"post",
+          body:JSON.stringify(formObject),
+          headers:{'Content-Type':'application/json'}
+        })
+        const result =await response.json();
+        // console.log(result)
+        if(response.ok && result.message ===  "Email sent successfull"){
+          // const result = response.json
+          alert("Thank you for your response, We'll get back to you soon");
+        }
+
+      })
+    </script>
   </body>
 </html>
